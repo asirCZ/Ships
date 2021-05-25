@@ -60,9 +60,9 @@ public class Ships extends JFrame {
 		for (int i = 0; i < 5; i++) {
 			pocetLodi[i] = i + 1;
 		}
-		boolean[] shipType = new boolean[5];
+		Position typLodi = new Position();
 		boolean[] ship = new boolean[100];
-		boolean[] shipBorder = new boolean[100];
+		boolean[] border = new boolean[100];
 		JButton letadlo = new JButton("Letadlova lod " + pocetLodi[0] + "x");
 		letadlo.setToolTipText("P\u0159es 5 pol\u00ED\u010Dek");
 		contentPane.add(letadlo);
@@ -70,7 +70,7 @@ public class Ships extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				pocetLodi[0]--;
 				letadlo.setText("Letadlova lod " + pocetLodi[0] + "x");
-				shipType[0] = true;
+				typLodi.setPozice(5);
 				if (pocetLodi[0] == 0) {
 					letadlo.setEnabled(false);
 				}
@@ -84,7 +84,7 @@ public class Ships extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				pocetLodi[1]--;
 				bitevni.setText("Bitevni lod " + pocetLodi[1] + "x");
-				shipType[1] = true;
+				typLodi.setPozice(4);
 				if (pocetLodi[1] == 0) {
 					bitevni.setEnabled(false);
 				}
@@ -97,7 +97,7 @@ public class Ships extends JFrame {
 		kriznik.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pocetLodi[2]--;
-				shipType[2] = true;
+				typLodi.setPozice(3);
 				kriznik.setText("Kriznik " + pocetLodi[2] + "x");
 				if (pocetLodi[2] == 0) {
 					kriznik.setEnabled(false);
@@ -111,7 +111,7 @@ public class Ships extends JFrame {
 		ponorka.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pocetLodi[3]--;
-				shipType[3] = true;
+				typLodi.setPozice(2);
 				ponorka.setText("Ponorka " + pocetLodi[3] + "x");
 				if (pocetLodi[3] == 0) {
 					ponorka.setEnabled(false);
@@ -124,7 +124,7 @@ public class Ships extends JFrame {
 		contentPane.add(torpedo);
 		torpedo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				shipType[4] = true;
+				typLodi.setPozice(1);
 				pocetLodi[4]--;
 				torpedo.setText("Torpedoborec " + pocetLodi[4] + "x");
 				if (pocetLodi[4] == 0) {
@@ -140,7 +140,6 @@ public class Ships extends JFrame {
 		int CisloTlacitka = 0;
 		Position p = new Position();
 		Position q = new Position();
-		Position border = new Position();
 		int MainButton = p.getPozice();
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
@@ -155,24 +154,71 @@ public class Ships extends JFrame {
 				} else {
 					b.setText(b.getName());
 				}
-				// contentPane.getComponent(CisloTlacitka + 5).setEnabled(false);
 				b.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (shipType[0]) {
-							q.setPozice(MainButton);
-							b.setEnabled(false);
-							b.setBackground(Color.GREEN);
-							p.setPozice(btn);
-							// contentPane.getComponent(p.getPozice() + 6).setEnabled(false);
-							ship[p.getPozice()] = true;
-							for (int i = 0; i < 100; i++) {
-								if (i == p.getPozice() + 1 || i == p.getPozice() - 1 || i == p.getPozice() - 10
-										|| i == p.getPozice() + 10) {
-									contentPane.getComponent(i + 6).setEnabled(true);
-								} else {
-									contentPane.getComponent(i + 6).setEnabled(false);
+						int y = 0;
+						bln blocked = new bln();
+						blocked.setBln(false);
+						try {
+							for (int i = typLodi.getPozice(); i > 0; i--) {
+								if ((ship[Integer.parseInt(b.getName()) - y]
+										|| border[Integer.parseInt(b.getName()) - y])) {
+									blocked.setBln(true);
+									break;
 								}
+								y += 10;
 							}
+						} catch (Exception ArrayIndexOutOfBoundsException) {
+							blocked.setBln(true);
+						}
+						if (blocked.isBln() == false && (Integer.parseInt(b.getName()) > (typLodi.getPozice() - 1) * 10)
+								&& typLodi.getPozice() != 0) {
+							int x = -6;
+							int z = 0;
+							for (typLodi.getPozice(); typLodi.getPozice() > 0; typLodi
+									.setPozice(typLodi.getPozice() - 1)) {
+								contentPane.getComponent(Integer.parseInt(b.getName()) - x).setBackground(Color.BLACK);
+								contentPane.getComponent(Integer.parseInt(b.getName()) - x).setEnabled(false);
+								if (((Integer.parseInt(b.getName()) - z + 1) % 10 != 0)) {
+									contentPane.getComponent(Integer.parseInt(b.getName()) - x + 1).setEnabled(false);
+								}
+								if (((Integer.parseInt(b.getName()) - z) % 10 != 0)) {
+									System.out.println(Integer.parseInt(b.getName()) - z - 1);
+									contentPane.getComponent(Integer.parseInt(b.getName()) - x - 1).setEnabled(false);
+								}
+								ship[Integer.parseInt(b.getName()) - z] = true;
+								if (((Integer.parseInt(b.getName()) - z + 1) % 10 != 0)) {
+									border[Integer.parseInt(b.getName()) - z + 1] = true;
+								}
+								if (((Integer.parseInt(b.getName()) - z) % 10 != 0)) {
+									border[Integer.parseInt(b.getName()) - z - 1] = true;
+								}
+								x += 10;
+								z += 10;
+							}
+							try {
+								contentPane.getComponent(Integer.parseInt(b.getName()) - x).setEnabled(false);
+								if (((Integer.parseInt(b.getName()) - z + 1) % 10 != 0)) {
+									contentPane.getComponent(Integer.parseInt(b.getName()) - x + 1).setEnabled(false);
+								}
+								if (((Integer.parseInt(b.getName()) - z + 3) % 10 != 0)) {
+									contentPane.getComponent(Integer.parseInt(b.getName()) - x - 1).setEnabled(false);
+								}
+							} catch (Exception ArrayIndexOutOfBoundsException) {
+
+							}
+							try {
+								contentPane.getComponent(Integer.parseInt(b.getName()) + 16).setEnabled(false);
+								if (((Integer.parseInt(b.getName()) + 1) % 10 != 0)) {
+									contentPane.getComponent(Integer.parseInt(b.getName()) + 17).setEnabled(false);
+									if (((Integer.parseInt(b.getName()) + 3) % 10 != 0)) {
+										contentPane.getComponent(Integer.parseInt(b.getName()) + 15).setEnabled(false);
+									}
+								}
+							} catch (Exception ArrayIndexOutOfBoundsException) {
+
+							}
+
 						}
 					}
 				});

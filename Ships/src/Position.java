@@ -1,6 +1,6 @@
 
 public class Position {
-	int pozice;
+	private int pozice;
 
 	public int getPozice() {
 		return pozice;
