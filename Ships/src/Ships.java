@@ -58,7 +58,11 @@ public class Ships extends JFrame {
 		setContentPane(contentPane);
 		int pocetLodi[] = new int[5];
 		for (int i = 0; i < 5; i++) {
-			pocetLodi[i] = i + 1;
+			if (i < 2) {
+				pocetLodi[i] = i + 1;
+			} else {
+				pocetLodi[i] = 2;
+			}
 		}
 		Position typLodi = new Position();
 		boolean[] ship = new boolean[100];
@@ -91,7 +95,7 @@ public class Ships extends JFrame {
 			}
 		});
 
-		JButton kriznik = new JButton("Kriznik 3x");
+		JButton kriznik = new JButton("Kriznik 2x");
 		kriznik.setToolTipText("P\u0159es 3 pol\u00ED\u010Dka");
 		contentPane.add(kriznik);
 		kriznik.addActionListener(new ActionListener() {
@@ -105,7 +109,7 @@ public class Ships extends JFrame {
 			}
 		});
 
-		JButton ponorka = new JButton("Ponorka 4x");
+		JButton ponorka = new JButton("Ponorka 2x");
 		ponorka.setToolTipText("P\u0159es 2 pol\u00ED\u010Dka");
 		contentPane.add(ponorka);
 		ponorka.addActionListener(new ActionListener() {
@@ -119,7 +123,7 @@ public class Ships extends JFrame {
 			}
 		});
 
-		JButton torpedo = new JButton("Torpedoborec 5x");
+		JButton torpedo = new JButton("Torpedoborec 2x");
 		torpedo.setToolTipText("P\u0159es 1 pol\u00ED\u010Dko");
 		contentPane.add(torpedo);
 		torpedo.addActionListener(new ActionListener() {
@@ -147,13 +151,60 @@ public class Ships extends JFrame {
 				ship[CisloTlacitka] = false;
 				JButton b = new JButton();
 				b.setName(Integer.toString(CisloTlacitka));
-				b.setBackground(Color.WHITE);
+				b.setBackground(Color.white);
 				b.setEnabled(true);
 				if (CisloTlacitka < 10) {
 					b.setText(0 + b.getName());
 				} else {
 					b.setText(b.getName());
 				}
+				b.addMouseListener(new MouseAdapter() {
+					public void mouseEntered(MouseEvent evt) {
+						int y = 0;
+						bln blocked = new bln();
+						blocked.setBln(false);
+						try {
+							for (int i = typLodi.getPozice(); i > 0; i--) {
+								if ((ship[Integer.parseInt(b.getName()) - y]
+										|| border[Integer.parseInt(b.getName()) - y])) {
+									blocked.setBln(true);
+									break;
+								}
+								y += 10;
+							}
+						} catch (Exception ArrayIndexOutOfBoundsException) {
+							blocked.setBln(true);
+						}
+						if (blocked.isBln() == false
+								&& (Integer.parseInt(b.getName()) >= (typLodi.getPozice() - 1) * 10)
+								&& typLodi.getPozice() != 0) {
+							int x = -6;
+							int z = 0;
+							try {
+								for (int r = typLodi.getPozice(); r > 0; r--) {
+									contentPane.getComponent(Integer.parseInt(b.getName()) - x)
+											.setBackground(Color.green);
+									y += 10;
+									x += 10;
+								}
+							} catch (Exception ArrayIndexOutOfBoundsException) {
+
+							}
+						}
+					}
+
+					public void mouseExited(MouseEvent evt) {
+						for (int i = 0; i < 100; i++) {
+							if (ship[i]) {
+								contentPane.getComponent(i + 6).setBackground(Color.LIGHT_GRAY);
+							} else if (border[i]) {
+								contentPane.getComponent(i + 6).setBackground(Color.cyan);
+							} else {
+							}
+
+						}
+					}
+				});
 				b.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						int y = 0;
@@ -171,19 +222,20 @@ public class Ships extends JFrame {
 						} catch (Exception ArrayIndexOutOfBoundsException) {
 							blocked.setBln(true);
 						}
-						if (blocked.isBln() == false && (Integer.parseInt(b.getName()) > (typLodi.getPozice() - 1) * 10)
+						if (blocked.isBln() == false
+								&& (Integer.parseInt(b.getName()) >= (typLodi.getPozice() - 1) * 10)
 								&& typLodi.getPozice() != 0) {
 							int x = -6;
 							int z = 0;
 							for (typLodi.getPozice(); typLodi.getPozice() > 0; typLodi
 									.setPozice(typLodi.getPozice() - 1)) {
-								contentPane.getComponent(Integer.parseInt(b.getName()) - x).setBackground(Color.BLACK);
+								contentPane.getComponent(Integer.parseInt(b.getName()) - x)
+										.setBackground(Color.LIGHT_GRAY);
 								contentPane.getComponent(Integer.parseInt(b.getName()) - x).setEnabled(false);
 								if (((Integer.parseInt(b.getName()) - z + 1) % 10 != 0)) {
 									contentPane.getComponent(Integer.parseInt(b.getName()) - x + 1).setEnabled(false);
 								}
 								if (((Integer.parseInt(b.getName()) - z) % 10 != 0)) {
-									System.out.println(Integer.parseInt(b.getName()) - z - 1);
 									contentPane.getComponent(Integer.parseInt(b.getName()) - x - 1).setEnabled(false);
 								}
 								ship[Integer.parseInt(b.getName()) - z] = true;
@@ -201,24 +253,41 @@ public class Ships extends JFrame {
 								if (((Integer.parseInt(b.getName()) - z + 1) % 10 != 0)) {
 									contentPane.getComponent(Integer.parseInt(b.getName()) - x + 1).setEnabled(false);
 								}
-								if (((Integer.parseInt(b.getName()) - z + 3) % 10 != 0)) {
+								System.out.println(Integer.parseInt(b.getName()) - z - 1);
+								if (((Integer.parseInt(b.getName()) - z) % 10 != 0)) {
 									contentPane.getComponent(Integer.parseInt(b.getName()) - x - 1).setEnabled(false);
+								}
+								border[Integer.parseInt(b.getName()) - z] = true;
+								if (((Integer.parseInt(b.getName()) - z + 1) % 10 != 0)) {
+									border[Integer.parseInt(b.getName()) - z + 1] = true;
+								}
+								if (((Integer.parseInt(b.getName()) - z) % 10 != 0)) {
+									border[Integer.parseInt(b.getName()) - z - 1] = true;
 								}
 							} catch (Exception ArrayIndexOutOfBoundsException) {
 
 							}
 							try {
 								contentPane.getComponent(Integer.parseInt(b.getName()) + 16).setEnabled(false);
+								border[Integer.parseInt(b.getName()) + 10] = true;
 								if (((Integer.parseInt(b.getName()) + 1) % 10 != 0)) {
 									contentPane.getComponent(Integer.parseInt(b.getName()) + 17).setEnabled(false);
+									border[Integer.parseInt(b.getName()) + 11] = true;
 									if (((Integer.parseInt(b.getName()) + 3) % 10 != 0)) {
 										contentPane.getComponent(Integer.parseInt(b.getName()) + 15).setEnabled(false);
+										border[Integer.parseInt(b.getName()) + 9] = true;
 									}
 								}
 							} catch (Exception ArrayIndexOutOfBoundsException) {
 
 							}
+							for (int i = 0; i < 100; i++) {
+								if (border[i]) {
+									System.out.println(i + " " + border[i]);
+									contentPane.getComponent(i + 6).setBackground(Color.cyan);
 
+								}
+							}
 						}
 					}
 				});
