@@ -200,6 +200,7 @@ public class Ships extends JFrame {
 							} else if (border[i]) {
 								contentPane.getComponent(i + 6).setBackground(Color.cyan);
 							} else {
+								contentPane.getComponent(i + 6).setBackground(Color.WHITE);
 							}
 
 						}
