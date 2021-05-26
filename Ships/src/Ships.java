@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.nio.file.Paths;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -28,6 +29,10 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("unused")
 public class Ships extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
@@ -67,73 +72,85 @@ public class Ships extends JFrame {
 		Position typLodi = new Position();
 		boolean[] ship = new boolean[100];
 		boolean[] border = new boolean[100];
+
 		JButton letadlo = new JButton("Letadlova lod " + pocetLodi[0] + "x");
 		letadlo.setToolTipText("P\u0159es 5 pol\u00ED\u010Dek");
 		contentPane.add(letadlo);
+		JButton bitevni = new JButton("Bitevni lod 2x");
+		bitevni.setToolTipText("P\u0159es 4 pol\u00ED\u010Dka");
+		contentPane.add(bitevni);
+		JButton kriznik = new JButton("Kriznik 2x");
+		kriznik.setToolTipText("P\u0159es 3 pol\u00ED\u010Dka");
+		contentPane.add(kriznik);
+		JButton ponorka = new JButton("Ponorka 2x");
+		ponorka.setToolTipText("P\u0159es 2 pol\u00ED\u010Dka");
+		contentPane.add(ponorka);
+		JButton torpedo = new JButton("Torpedoborec 2x");
+		torpedo.setToolTipText("P\u0159es 1 pol\u00ED\u010Dko");
+		contentPane.add(torpedo);
+
 		letadlo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pocetLodi[0]--;
 				letadlo.setText("Letadlova lod " + pocetLodi[0] + "x");
 				typLodi.setPozice(5);
-				if (pocetLodi[0] == 0) {
-					letadlo.setEnabled(false);
-				}
+				letadlo.setEnabled(false);
+				bitevni.setEnabled(false);
+				kriznik.setEnabled(false);
+				ponorka.setEnabled(false);
+				torpedo.setEnabled(false);
+
 			}
 		});
-
-		JButton bitevni = new JButton("Bitevni lod 2x");
-		bitevni.setToolTipText("P\u0159es 4 pol\u00ED\u010Dka");
-		contentPane.add(bitevni);
 		bitevni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pocetLodi[1]--;
 				bitevni.setText("Bitevni lod " + pocetLodi[1] + "x");
 				typLodi.setPozice(4);
-				if (pocetLodi[1] == 0) {
-					bitevni.setEnabled(false);
-				}
+				letadlo.setEnabled(false);
+				bitevni.setEnabled(false);
+				kriznik.setEnabled(false);
+				ponorka.setEnabled(false);
+				torpedo.setEnabled(false);
 			}
 		});
 
-		JButton kriznik = new JButton("Kriznik 2x");
-		kriznik.setToolTipText("P\u0159es 3 pol\u00ED\u010Dka");
-		contentPane.add(kriznik);
 		kriznik.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pocetLodi[2]--;
 				typLodi.setPozice(3);
 				kriznik.setText("Kriznik " + pocetLodi[2] + "x");
-				if (pocetLodi[2] == 0) {
-					kriznik.setEnabled(false);
-				}
+				letadlo.setEnabled(false);
+				bitevni.setEnabled(false);
+				kriznik.setEnabled(false);
+				ponorka.setEnabled(false);
+				torpedo.setEnabled(false);
 			}
 		});
 
-		JButton ponorka = new JButton("Ponorka 2x");
-		ponorka.setToolTipText("P\u0159es 2 pol\u00ED\u010Dka");
-		contentPane.add(ponorka);
 		ponorka.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pocetLodi[3]--;
 				typLodi.setPozice(2);
 				ponorka.setText("Ponorka " + pocetLodi[3] + "x");
-				if (pocetLodi[3] == 0) {
-					ponorka.setEnabled(false);
-				}
+				letadlo.setEnabled(false);
+				bitevni.setEnabled(false);
+				kriznik.setEnabled(false);
+				ponorka.setEnabled(false);
+				torpedo.setEnabled(false);
 			}
 		});
 
-		JButton torpedo = new JButton("Torpedoborec 2x");
-		torpedo.setToolTipText("P\u0159es 1 pol\u00ED\u010Dko");
-		contentPane.add(torpedo);
 		torpedo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				typLodi.setPozice(1);
 				pocetLodi[4]--;
 				torpedo.setText("Torpedoborec " + pocetLodi[4] + "x");
-				if (pocetLodi[4] == 0) {
-					torpedo.setEnabled(false);
-				}
+				letadlo.setEnabled(false);
+				bitevni.setEnabled(false);
+				kriznik.setEnabled(false);
+				ponorka.setEnabled(false);
+				torpedo.setEnabled(false);
 			}
 		});
 
@@ -141,6 +158,11 @@ public class Ships extends JFrame {
 				"                                                      Po v\u00FDb\u011Bru lod\u00ED klikn\u011Bte.                                                      ");
 		start.setEnabled(false);
 		contentPane.add(start);
+		start.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
 		int CisloTlacitka = 0;
 		Position p = new Position();
 		Position q = new Position();
@@ -200,6 +222,7 @@ public class Ships extends JFrame {
 							} else if (border[i]) {
 								contentPane.getComponent(i + 6).setBackground(Color.cyan);
 							} else {
+								contentPane.getComponent(i + 6).setBackground(Color.WHITE);
 							}
 
 						}
@@ -253,7 +276,6 @@ public class Ships extends JFrame {
 								if (((Integer.parseInt(b.getName()) - z + 1) % 10 != 0)) {
 									contentPane.getComponent(Integer.parseInt(b.getName()) - x + 1).setEnabled(false);
 								}
-								System.out.println(Integer.parseInt(b.getName()) - z - 1);
 								if (((Integer.parseInt(b.getName()) - z) % 10 != 0)) {
 									contentPane.getComponent(Integer.parseInt(b.getName()) - x - 1).setEnabled(false);
 								}
@@ -273,21 +295,47 @@ public class Ships extends JFrame {
 								if (((Integer.parseInt(b.getName()) + 1) % 10 != 0)) {
 									contentPane.getComponent(Integer.parseInt(b.getName()) + 17).setEnabled(false);
 									border[Integer.parseInt(b.getName()) + 11] = true;
-									if (((Integer.parseInt(b.getName()) + 3) % 10 != 0)) {
-										contentPane.getComponent(Integer.parseInt(b.getName()) + 15).setEnabled(false);
-										border[Integer.parseInt(b.getName()) + 9] = true;
-									}
+								}
+								if (((Integer.parseInt(b.getName())) % 10 != 0)) {
+									contentPane.getComponent(Integer.parseInt(b.getName()) + 15).setEnabled(false);
+									border[Integer.parseInt(b.getName()) + 9] = true;
+
 								}
 							} catch (Exception ArrayIndexOutOfBoundsException) {
 
 							}
 							for (int i = 0; i < 100; i++) {
 								if (border[i]) {
-									System.out.println(i + " " + border[i]);
 									contentPane.getComponent(i + 6).setBackground(Color.cyan);
 
 								}
 							}
+							if (pocetLodi[0] > 0) {
+								letadlo.setEnabled(true);
+							}
+							if (pocetLodi[1] > 0) {
+								bitevni.setEnabled(true);
+							}
+							if (pocetLodi[2] > 0) {
+								kriznik.setEnabled(true);
+							}
+							if (pocetLodi[3] > 0) {
+								ponorka.setEnabled(true);
+							}
+							if (pocetLodi[4] > 0) {
+								torpedo.setEnabled(true);
+							}
+							int pocet = 0;
+							for (int i = 0; i < 5; i++) {
+								if (pocetLodi[i] == 0) {
+									pocet++;
+								}
+
+							}
+							if (pocet == 5) {
+								start.setEnabled(true);
+							}
+
 						}
 					}
 				});
