@@ -9,6 +9,5 @@ public class Position {
 	public void setPozice(int pozice) {
 		this.pozice = pozice;
 	}
-	
-	
+
 }
