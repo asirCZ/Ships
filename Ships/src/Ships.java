@@ -347,3 +347,4 @@ public class Ships extends JFrame {
 	}
 
 }
+      
