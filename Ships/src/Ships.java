@@ -160,6 +160,7 @@ public class Ships extends JFrame {
 		contentPane.add(start);
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 			}
 		});
 
