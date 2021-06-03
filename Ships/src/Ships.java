@@ -160,14 +160,18 @@ public class Ships extends JFrame {
 		contentPane.add(start);
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				start.setEnabled(false);
+				try {
+					Protivnik frame = new Protivnik();
+					frame.setVisible(true);
+				} catch (Exception ee) {
+					ee.printStackTrace();
+				}
 
 			}
 		});
 
 		int CisloTlacitka = 0;
-		Position p = new Position();
-		Position q = new Position();
-		int MainButton = p.getPozice();
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
 				int btn = CisloTlacitka;
