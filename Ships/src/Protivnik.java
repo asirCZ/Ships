@@ -59,7 +59,6 @@ public class Protivnik extends JFrame {
 					ship[pozice - a] = true;
 
 					if ((pozice - a) % 10 != 0) {
-						System.out.println(pozice - a % 10);
 						border[pozice - a - 1] = true;
 					}
 					if ((pozice - a + 1) % 10 != 0) {
@@ -111,6 +110,9 @@ public class Protivnik extends JFrame {
 				b.setName(Integer.toString(CisloTlacitka));
 				b.setBackground(Color.white);
 				b.setEnabled(true);
+				if (ship[btn]) {
+					b.setBackground(Color.green);
+				}
 				if (CisloTlacitka < 10) {
 					b.setText(0 + b.getName());
 				} else {
@@ -127,42 +129,109 @@ public class Protivnik extends JFrame {
 							if ((btn + 1) % 10 != 0) {
 								getContentPane().getComponent(btn + 1).setEnabled(false);
 							}
-							boolean closed = false;
-							int q = 10;
-							try {
-								if (!getContentPane().getComponent(btn + q).isEnabled() && ship[btn + q]
-										|| (ship[btn + q] && ship[btn - q])) {
-									do {
-										if (!getContentPane().getComponent(btn + q).isEnabled() && !ship[btn + q]) {
-											closed = true;
-											break;
+							int nahoreCislo = -10;
+							int doleCislo = -10;
+							for (int i = 0; (btn - i) >= 0; i += 10) {
+								System.out.println(btn - i - 10);
+								if ((btn - i - 10) < 0) {
+									boolean full = false;
+									for (int x = 0; (btn + x) < 100; x += 10) {
+										if ((btn + x + 10) >= 100) {
+
+										} else if (ship[btn + x] && !getContentPane().getComponent(btn + x).isEnabled()
+												&& ship[btn + x + 10] == false) {
+											doleCislo = btn + x + 10;
+
+											try {
+												getContentPane().getComponent(doleCislo).setEnabled(false);
+												if ((doleCislo + 1) % 10 != 0) {
+													getContentPane().getComponent(doleCislo + 1).setEnabled(false);
+												}
+											} catch (Exception ArrayIndexOutOfBoundsException) {
+
+											}
+											try {
+												if (doleCislo % 10 != 0) {
+													getContentPane().getComponent(doleCislo - 1).setEnabled(false);
+												}
+											} catch (Exception ArrayIndexOutOfBoundsException) {
+
+											}
 										}
-										q += 10;
-									} while (!closed);
-								}
-							} catch (Exception ArrayIndexOutOfBoundsException) {
-								closed = true;
-							}
-							if (closed) {
-								try {
-									getContentPane().getComponent(btn - 10).setEnabled(false);
-									if ((btn - 10) % 10 != 0) {
-										getContentPane().getComponent(btn - 11).setEnabled(false);
 									}
-									if ((btn - 9) % 10 != 0) {
-										getContentPane().getComponent(btn - 9).setEnabled(false);
+
+								} else if (ship[btn - i] && !getContentPane().getComponent(btn - i).isEnabled()
+										&& ship[btn - i - 10] == false) {
+									nahoreCislo = btn - i - 10;
+									System.out.println("NahoreCislo " + nahoreCislo);
+
+									for (int x = 0; (btn + x) < 100; x += 10) {
+										if ((btn + x + 10) >= 100) {
+											if (ship[btn + x] && !getContentPane().getComponent(btn + x).isEnabled()) {
+												try {
+													getContentPane().getComponent(nahoreCislo).setEnabled(false);
+													if ((nahoreCislo + 1) % 10 != 0) {
+														getContentPane().getComponent(nahoreCislo + 1)
+																.setEnabled(false);
+													}
+												} catch (Exception ArrayIndexOutOfBoundsException) {
+												}
+												try {
+													if (nahoreCislo % 10 != 0) {
+														getContentPane().getComponent(nahoreCislo - 1)
+																.setEnabled(false);
+													}
+												} catch (Exception ArrayIndexOutOfBoundsException) {
+
+												}
+											}
+										} else if (ship[btn + x] && !getContentPane().getComponent(btn + x).isEnabled()
+												&& ship[btn + x + 10] == false) {
+											doleCislo = btn + x + 10;
+											try {
+												getContentPane().getComponent(nahoreCislo).setEnabled(false);
+												if ((nahoreCislo + 1) % 10 != 0) {
+													getContentPane().getComponent(nahoreCislo + 1).setEnabled(false);
+												}
+											} catch (Exception ArrayIndexOutOfBoundsException) {
+											}
+											try {
+												if (nahoreCislo % 10 != 0) {
+													getContentPane().getComponent(nahoreCislo - 1).setEnabled(false);
+												}
+											} catch (Exception ArrayIndexOutOfBoundsException) {
+
+											}
+											try {
+												getContentPane().getComponent(doleCislo).setEnabled(false);
+												if ((doleCislo + 1) % 10 != 0) {
+													getContentPane().getComponent(doleCislo + 1).setEnabled(false);
+												}
+											} catch (Exception ArrayIndexOutOfBoundsException) {
+
+											}
+											try {
+												if (doleCislo % 10 != 0) {
+													getContentPane().getComponent(doleCislo - 1).setEnabled(false);
+												}
+											} catch (Exception ArrayIndexOutOfBoundsException) {
+
+											}
+
+										}
 									}
-								} catch (Exception ArrayIndexOutOfBoundsException) {
+									break;
 
 								}
+
 							}
 
 						}
 						if (!ship[btn]) {
 							getContentPane().getComponent(btn).setEnabled(false);
+
 						}
 					}
-
 				});
 
 				getContentPane().add(b);

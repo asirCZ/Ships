@@ -40,12 +40,18 @@ public class Ships extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+			public void run() {/*
 				try {
 					Ships frame = new Ships();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
+				}*/
+				try {
+					Protivnik frame = new Protivnik();
+					frame.setVisible(true);
+				} catch (Exception ee) {
+					ee.printStackTrace();
 				}
 			}
 		});
