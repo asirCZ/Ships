@@ -134,7 +134,7 @@ public class Protivnik extends JFrame {
 									for (int x = 0; (btn + x) < 100; x += 10) {
 										if ((btn + x + 10) >= 100) {
 										} else if (ship[btn + x] && !getContentPane().getComponent(btn + x).isEnabled()
-												&& ship[btn + x + 10] == false && btn < 10) {
+												&& ship[btn + x + 10] == false && nahoreCislo == -10) {
 											doleCislo = btn + x + 10;
 											try {
 												getContentPane().getComponent(doleCislo).setEnabled(false);
