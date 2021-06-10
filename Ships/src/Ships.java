@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -29,37 +30,9 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("unused")
 public class Ships extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {/*
-				try {
-					Ships frame = new Ships();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}*/
-				try {
-					Protivnik frame = new Protivnik();
-					frame.setVisible(true);
-				} catch (Exception ee) {
-					ee.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public Ships() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 560, 460);
@@ -167,13 +140,7 @@ public class Ships extends JFrame {
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				start.setEnabled(false);
-				try {
-					Protivnik frame = new Protivnik();
-					frame.setVisible(true);
-				} catch (Exception ee) {
-					ee.printStackTrace();
-				}
-
+				Game.EnemyStart();
 			}
 		});
 

@@ -27,6 +27,7 @@ public class Protivnik extends JFrame {
 		boolean ship[] = new boolean[100];
 		boolean border[] = new boolean[100];
 		int pocetLodi[] = new int[5];
+		Position aktivniPole = new Position();
 		for (int i = 0; i < 5; i++) {
 			if (i < 2) {
 				pocetLodi[i] = i + 1;
@@ -100,8 +101,6 @@ public class Protivnik extends JFrame {
 		}
 		instrukce.setText(
 				"                                                           Zde hádáte lodì protivníka                                                           ");
-
-		// getContentPane().add(instrukce);
 		int CisloTlacitka = 0;
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
@@ -110,9 +109,6 @@ public class Protivnik extends JFrame {
 				b.setName(Integer.toString(CisloTlacitka));
 				b.setBackground(Color.white);
 				b.setEnabled(true);
-				if (ship[btn]) {
-					b.setBackground(Color.green);
-				}
 				if (CisloTlacitka < 10) {
 					b.setText(0 + b.getName());
 				} else {
@@ -121,6 +117,7 @@ public class Protivnik extends JFrame {
 				b.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if (ship[btn]) {
+							aktivniPole.setPozice(aktivniPole.getPozice() + 1);
 							b.setBackground(Color.red);
 							b.setEnabled(false);
 							if ((btn) % 10 != 0) {
@@ -134,14 +131,11 @@ public class Protivnik extends JFrame {
 							for (int i = 0; (btn - i) >= 0; i += 10) {
 								System.out.println(btn - i - 10);
 								if ((btn - i - 10) < 0) {
-									boolean full = false;
 									for (int x = 0; (btn + x) < 100; x += 10) {
 										if ((btn + x + 10) >= 100) {
-
 										} else if (ship[btn + x] && !getContentPane().getComponent(btn + x).isEnabled()
-												&& ship[btn + x + 10] == false) {
+												&& ship[btn + x + 10] == false && btn < 10) {
 											doleCislo = btn + x + 10;
-
 											try {
 												getContentPane().getComponent(doleCislo).setEnabled(false);
 												if ((doleCislo + 1) % 10 != 0) {
@@ -157,6 +151,7 @@ public class Protivnik extends JFrame {
 											} catch (Exception ArrayIndexOutOfBoundsException) {
 
 											}
+
 										}
 									}
 
@@ -188,34 +183,46 @@ public class Protivnik extends JFrame {
 										} else if (ship[btn + x] && !getContentPane().getComponent(btn + x).isEnabled()
 												&& ship[btn + x + 10] == false) {
 											doleCislo = btn + x + 10;
-											try {
-												getContentPane().getComponent(nahoreCislo).setEnabled(false);
-												if ((nahoreCislo + 1) % 10 != 0) {
-													getContentPane().getComponent(nahoreCislo + 1).setEnabled(false);
+											System.out.println("DoleCislo" + doleCislo);
+											boolean full = true;
+											for (int u = nahoreCislo + 10; u < (doleCislo - 10); u += 10) {
+												if (ship[u] && getContentPane().getComponent(u).isEnabled()) {
+													full = false;
+													break;
 												}
-											} catch (Exception ArrayIndexOutOfBoundsException) {
 											}
-											try {
-												if (nahoreCislo % 10 != 0) {
-													getContentPane().getComponent(nahoreCislo - 1).setEnabled(false);
+											if (full) {
+												try {
+													getContentPane().getComponent(nahoreCislo).setEnabled(false);
+													if ((nahoreCislo + 1) % 10 != 0) {
+														getContentPane().getComponent(nahoreCislo + 1)
+																.setEnabled(false);
+													}
+												} catch (Exception ArrayIndexOutOfBoundsException) {
 												}
-											} catch (Exception ArrayIndexOutOfBoundsException) {
+												try {
+													if (nahoreCislo % 10 != 0) {
+														getContentPane().getComponent(nahoreCislo - 1)
+																.setEnabled(false);
+													}
+												} catch (Exception ArrayIndexOutOfBoundsException) {
 
-											}
-											try {
-												getContentPane().getComponent(doleCislo).setEnabled(false);
-												if ((doleCislo + 1) % 10 != 0) {
-													getContentPane().getComponent(doleCislo + 1).setEnabled(false);
 												}
-											} catch (Exception ArrayIndexOutOfBoundsException) {
+												try {
+													getContentPane().getComponent(doleCislo).setEnabled(false);
+													if ((doleCislo + 1) % 10 != 0) {
+														getContentPane().getComponent(doleCislo + 1).setEnabled(false);
+													}
+												} catch (Exception ArrayIndexOutOfBoundsException) {
 
-											}
-											try {
-												if (doleCislo % 10 != 0) {
-													getContentPane().getComponent(doleCislo - 1).setEnabled(false);
 												}
-											} catch (Exception ArrayIndexOutOfBoundsException) {
+												try {
+													if (doleCislo % 10 != 0) {
+														getContentPane().getComponent(doleCislo - 1).setEnabled(false);
+													}
+												} catch (Exception ArrayIndexOutOfBoundsException) {
 
+												}
 											}
 
 										}
@@ -231,6 +238,9 @@ public class Protivnik extends JFrame {
 							getContentPane().getComponent(btn).setEnabled(false);
 
 						}
+						if (aktivniPole.getPozice() == 25) {
+							Game.EnemyWin();
+						}
 					}
 				});
 
@@ -238,6 +248,7 @@ public class Protivnik extends JFrame {
 				CisloTlacitka++;
 			}
 		}
+		getContentPane().add(instrukce);
 	}
 
 }
