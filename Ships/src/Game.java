@@ -1,5 +1,3 @@
-import java.awt.EventQueue;
-
 public class Game {
 	static Ships frame1 = new Ships();
 	static Protivnik frame2 = new Protivnik();
