@@ -128,29 +128,44 @@ public class Protivnik extends JFrame {
 							}
 							int nahoreCislo = -10;
 							int doleCislo = -10;
+
 							for (int i = 0; (btn - i) >= 0; i += 10) {
 								System.out.println(btn - i - 10);
 								if ((btn - i - 10) < 0) {
 									for (int x = 0; (btn + x) < 100; x += 10) {
-										if ((btn + x + 10) >= 100) {
-										} else if (ship[btn + x] && !getContentPane().getComponent(btn + x).isEnabled()
-												&& ship[btn + x + 10] == false && nahoreCislo == -10) {
-											doleCislo = btn + x + 10;
-											try {
-												getContentPane().getComponent(doleCislo).setEnabled(false);
-												if ((doleCislo + 1) % 10 != 0) {
-													getContentPane().getComponent(doleCislo + 1).setEnabled(false);
+										try {
+											if (ship[btn + x] && !getContentPane().getComponent(btn + x).isEnabled()
+													&& ship[btn + x + 10] == false && nahoreCislo == -10) {
+												doleCislo = btn + x + 10;
+												boolean full = true;
+												for (int u = doleCislo; u > 0; u -= 10) {
+													if (ship[u] && getContentPane().getComponent(u).isEnabled()) {
+														full = false;
+														break;
+													}
 												}
-											} catch (Exception ArrayIndexOutOfBoundsException) {
+												if (full) {
+													try {
+														getContentPane().getComponent(doleCislo).setEnabled(false);
+														if ((doleCislo + 1) % 10 != 0) {
+															getContentPane().getComponent(doleCislo + 1)
+																	.setEnabled(false);
+														}
+													} catch (Exception ArrayIndexOutOfBoundsException) {
 
-											}
-											try {
-												if (doleCislo % 10 != 0) {
-													getContentPane().getComponent(doleCislo - 1).setEnabled(false);
+													}
+													try {
+														if (doleCislo % 10 != 0) {
+															getContentPane().getComponent(doleCislo - 1)
+																	.setEnabled(false);
+														}
+													} catch (Exception ArrayIndexOutOfBoundsException) {
+
+													}
+
 												}
-											} catch (Exception ArrayIndexOutOfBoundsException) {
-
 											}
+										} catch (Exception ArrayIndexOutOfBoundsException) {
 
 										}
 									}
