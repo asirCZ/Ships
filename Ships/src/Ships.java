@@ -1,37 +1,30 @@
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
+import java.util.Random;
 
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JList;
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
-import javax.swing.JMenuBar;
-import java.awt.Button;
+
 import java.awt.Color;
 
-import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-@SuppressWarnings("unused")
 public class Ships extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	boolean[] ship = new boolean[100];
+	boolean[] border = new boolean[100];
+	boolean gameInProgress = false;
+	boolean hit = false;
+	boolean down = false;
+	boolean up = false;
+	int hitPosition = 0;
+	int posun = 0;
+	Position aktivniPole = new Position();
 
 	public Ships() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,8 +42,6 @@ public class Ships extends JFrame {
 			}
 		}
 		Position typLodi = new Position();
-		boolean[] ship = new boolean[100];
-		boolean[] border = new boolean[100];
 
 		JButton letadlo = new JButton("Letadlova lod " + pocetLodi[0] + "x");
 		letadlo.setToolTipText("P\u0159es 5 pol\u00ED\u010Dek");
@@ -139,6 +130,9 @@ public class Ships extends JFrame {
 		contentPane.add(start);
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < 100; i++) {
+					getContentPane().getComponent(i + 6).setEnabled(true);
+				}
 				start.setEnabled(false);
 				Game.EnemyStart();
 			}
@@ -147,7 +141,6 @@ public class Ships extends JFrame {
 		int CisloTlacitka = 0;
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
-				int btn = CisloTlacitka;
 				ship[CisloTlacitka] = false;
 				JButton b = new JButton();
 				b.setName(Integer.toString(CisloTlacitka));
@@ -160,49 +153,52 @@ public class Ships extends JFrame {
 				}
 				b.addMouseListener(new MouseAdapter() {
 					public void mouseEntered(MouseEvent evt) {
-						int y = 0;
-						bln blocked = new bln();
-						blocked.setBln(false);
-						try {
-							for (int i = typLodi.getPozice(); i > 0; i--) {
-								if ((ship[Integer.parseInt(b.getName()) - y]
-										|| border[Integer.parseInt(b.getName()) - y])) {
-									blocked.setBln(true);
-									break;
-								}
-								y += 10;
-							}
-						} catch (Exception ArrayIndexOutOfBoundsException) {
-							blocked.setBln(true);
-						}
-						if (blocked.isBln() == false
-								&& (Integer.parseInt(b.getName()) >= (typLodi.getPozice() - 1) * 10)
-								&& typLodi.getPozice() != 0) {
-							int x = -6;
-							int z = 0;
+						if (!gameInProgress) {
+							int y = 0;
+							bln blocked = new bln();
+							blocked.setBln(false);
 							try {
-								for (int r = typLodi.getPozice(); r > 0; r--) {
-									contentPane.getComponent(Integer.parseInt(b.getName()) - x)
-											.setBackground(Color.green);
+								for (int i = typLodi.getPozice(); i > 0; i--) {
+									if ((ship[Integer.parseInt(b.getName()) - y]
+											|| border[Integer.parseInt(b.getName()) - y])) {
+										blocked.setBln(true);
+										break;
+									}
 									y += 10;
-									x += 10;
 								}
 							} catch (Exception ArrayIndexOutOfBoundsException) {
+								blocked.setBln(true);
+							}
+							if (blocked.isBln() == false
+									&& (Integer.parseInt(b.getName()) >= (typLodi.getPozice() - 1) * 10)
+									&& typLodi.getPozice() != 0) {
+								int x = -6;
+								try {
+									for (int r = typLodi.getPozice(); r > 0; r--) {
+										contentPane.getComponent(Integer.parseInt(b.getName()) - x)
+												.setBackground(Color.green);
+										y += 10;
+										x += 10;
+									}
+								} catch (Exception ArrayIndexOutOfBoundsException) {
 
+								}
 							}
 						}
 					}
 
 					public void mouseExited(MouseEvent evt) {
-						for (int i = 0; i < 100; i++) {
-							if (ship[i]) {
-								contentPane.getComponent(i + 6).setBackground(Color.LIGHT_GRAY);
-							} else if (border[i]) {
-								contentPane.getComponent(i + 6).setBackground(Color.cyan);
-							} else {
-								contentPane.getComponent(i + 6).setBackground(Color.WHITE);
-							}
+						if (!gameInProgress) {
+							for (int i = 0; i < 100; i++) {
+								if (ship[i]) {
+									contentPane.getComponent(i + 6).setBackground(Color.LIGHT_GRAY);
+								} else if (border[i]) {
+									contentPane.getComponent(i + 6).setBackground(Color.cyan);
+								} else {
+									contentPane.getComponent(i + 6).setBackground(Color.WHITE);
+								}
 
+							}
 						}
 					}
 				});
@@ -322,6 +318,208 @@ public class Ships extends JFrame {
 			}
 
 		}
+
+	}
+
+	public void Attack() throws InterruptedException {
+		Random r = new Random();
+		int btn = 0;
+		System.out.println(hitPosition + (posun * 10) + " dolu");
+		if (hit && down && ((hitPosition + (posun * 10)) < 100)) {
+			btn = hitPosition + (posun * 10);
+			if (!getContentPane().getComponent(btn + 6).isEnabled()) {
+				posun = 1;
+				down = false;
+				up = true;
+			}
+		} else if (!up) {
+			posun = 1;
+			down = false;
+			up = true;
+		}
+		System.out.println(hitPosition - (posun * 10) + " nahoru");
+		if (hit && up && ((hitPosition - (posun * 10))) >= 0) {
+			btn = hitPosition - (posun * 10);
+			if (!getContentPane().getComponent(btn + 6).isEnabled()) {
+				up = false;
+				down = false;
+				hit = false;
+				posun = 0;
+			}
+		} else if (hit && up && ((hitPosition - (posun * 10))) < 0) {
+			up = false;
+			down = false;
+			hit = false;
+			posun = 0;
+
+		}
+		if (!hit) {
+			posun = 0;
+			hit = false;
+			up = false;
+			down = false;
+			do {
+				btn = r.nextInt(100);
+			} while (!getContentPane().getComponent(btn + 6).isEnabled());
+		}
+		gameInProgress = true;
+		System.out.println(btn);
+		if (ship[btn]) {
+			if (hit == false) {
+				hit = true;
+				down = true;
+				hitPosition = btn;
+			}
+			posun++;
+			aktivniPole.setPozice(aktivniPole.getPozice() + 1);
+			getContentPane().getComponent(btn + 6).setBackground(Color.red);
+			getContentPane().getComponent(btn + 6).setEnabled(false);
+			if ((btn) % 10 != 0) {
+				getContentPane().getComponent(btn + 5).setEnabled(false);
+			}
+			if ((btn + 1) % 10 != 0) {
+				getContentPane().getComponent(btn + 7).setEnabled(false);
+			}
+			int nahoreCislo = -10;
+			int doleCislo = -10;
+
+			for (int i = 0; (btn - i) >= 0; i += 10) {
+				if ((btn - i - 10) < 0) {
+					for (int x = 0; (btn + x) < 100; x += 10) {
+						try {
+							if (ship[btn + x] && !getContentPane().getComponent(btn + x + 6).isEnabled()
+									&& ship[btn + x + 10] == false && nahoreCislo == -10) {
+								doleCislo = btn + x + 10;
+								boolean full = true;
+								for (int u = doleCislo; u > 0; u -= 10) {
+									if (ship[u] && getContentPane().getComponent(u + 6).isEnabled()) {
+										full = false;
+										break;
+									}
+								}
+								if (full) {
+									try {
+										getContentPane().getComponent(doleCislo + 6).setEnabled(false);
+										if ((doleCislo + 1) % 10 != 0) {
+											getContentPane().getComponent(doleCislo + 7).setEnabled(false);
+										}
+									} catch (Exception ArrayIndexOutOfBoundsException) {
+
+									}
+									try {
+										if (doleCislo % 10 != 0) {
+											getContentPane().getComponent(doleCislo + 5).setEnabled(false);
+										}
+									} catch (Exception ArrayIndexOutOfBoundsException) {
+
+									}
+
+								}
+							}
+						} catch (Exception ArrayIndexOutOfBoundsException) {
+
+						}
+					}
+
+				} else if (ship[btn - i] && !getContentPane().getComponent(btn - i + 6).isEnabled()
+						&& ship[btn - i - 10] == false) {
+					nahoreCislo = btn - i - 10;
+
+					for (int x = 0; (btn + x) < 100; x += 10) {
+						if ((btn + x + 10) >= 100) {
+							if (ship[btn + x] && !getContentPane().getComponent(btn + x + 6).isEnabled()) {
+								try {
+									getContentPane().getComponent(nahoreCislo + 6).setEnabled(false);
+									if ((nahoreCislo + 1) % 10 != 0) {
+										getContentPane().getComponent(nahoreCislo + 7).setEnabled(false);
+									}
+								} catch (Exception ArrayIndexOutOfBoundsException) {
+								}
+								try {
+									if (nahoreCislo % 10 != 0) {
+										getContentPane().getComponent(nahoreCislo + 5).setEnabled(false);
+									}
+								} catch (Exception ArrayIndexOutOfBoundsException) {
+
+								}
+							}
+						} else if (ship[btn + x] && !getContentPane().getComponent(btn + x + 6).isEnabled()
+								&& ship[btn + x + 10] == false) {
+							doleCislo = btn + x + 10;
+							boolean full = true;
+							for (int u = nahoreCislo + 10; u < (doleCislo - 10); u += 10) {
+								if (ship[u] && getContentPane().getComponent(u + 6).isEnabled()) {
+									full = false;
+									break;
+								}
+							}
+							if (full) {
+								up = false;
+								down = false;
+								hit = false;
+								posun = 0;
+								try {
+									getContentPane().getComponent(nahoreCislo + 6).setEnabled(false);
+									if ((nahoreCislo + 1) % 10 != 0) {
+										getContentPane().getComponent(nahoreCislo + 7).setEnabled(false);
+									}
+								} catch (Exception ArrayIndexOutOfBoundsException) {
+								}
+								try {
+									if (nahoreCislo % 10 != 0) {
+										getContentPane().getComponent(nahoreCislo + 5).setEnabled(false);
+									}
+								} catch (Exception ArrayIndexOutOfBoundsException) {
+
+								}
+								try {
+									getContentPane().getComponent(doleCislo + 6).setEnabled(false);
+									if ((doleCislo + 1) % 10 != 0) {
+										getContentPane().getComponent(doleCislo + 7).setEnabled(false);
+									}
+								} catch (Exception ArrayIndexOutOfBoundsException) {
+
+								}
+								try {
+									if (doleCislo % 10 != 0) {
+										getContentPane().getComponent(doleCislo + 5).setEnabled(false);
+									}
+								} catch (Exception ArrayIndexOutOfBoundsException) {
+
+								}
+							}
+
+						}
+					}
+					break;
+
+				}
+
+			}
+		}
+		if (!ship[btn]) {
+			Game.enemyPlaying = false;
+			if (down) {
+				down = false;
+				up = true;
+				posun = 1;
+			} else if (up) {
+				up = false;
+				down = false;
+				hit = false;
+				posun = 0;
+			}
+			getContentPane().getComponent(btn + 6).setEnabled(false);
+			getContentPane().getComponent(btn + 6).setBackground(Color.green);
+
+		}
+		if (aktivniPole.getPozice() == 25) {
+			Game.GameOver(false);
+		} else if (ship[btn]) {
+			Game.enemyPlaying = true;
+			Game.anotherTry();
+		}
+
 	}
 
 }
