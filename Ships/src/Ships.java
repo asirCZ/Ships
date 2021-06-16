@@ -166,7 +166,7 @@ public class Ships extends JFrame {
 									}
 									y += 10;
 								}
-							} catch (Exception ArrayIndexOutOfBoundsException) {
+							} catch (ArrayIndexOutOfBoundsException eee) {
 								blocked.setBln(true);
 							}
 							if (blocked.isBln() == false
@@ -180,7 +180,7 @@ public class Ships extends JFrame {
 										y += 10;
 										x += 10;
 									}
-								} catch (Exception ArrayIndexOutOfBoundsException) {
+								} catch (ArrayIndexOutOfBoundsException eee) {
 
 								}
 							}
@@ -216,7 +216,7 @@ public class Ships extends JFrame {
 								}
 								y += 10;
 							}
-						} catch (Exception ArrayIndexOutOfBoundsException) {
+						} catch (ArrayIndexOutOfBoundsException eee) {
 							blocked.setBln(true);
 						}
 						if (blocked.isBln() == false
@@ -260,7 +260,7 @@ public class Ships extends JFrame {
 								if (((Integer.parseInt(b.getName()) - z) % 10 != 0)) {
 									border[Integer.parseInt(b.getName()) - z - 1] = true;
 								}
-							} catch (Exception ArrayIndexOutOfBoundsException) {
+							} catch (ArrayIndexOutOfBoundsException eee) {
 
 							}
 							try {
@@ -275,7 +275,7 @@ public class Ships extends JFrame {
 									border[Integer.parseInt(b.getName()) + 9] = true;
 
 								}
-							} catch (Exception ArrayIndexOutOfBoundsException) {
+							} catch (ArrayIndexOutOfBoundsException eee) {
 
 							}
 							for (int i = 0; i < 100; i++) {
@@ -391,7 +391,7 @@ public class Ships extends JFrame {
 									&& ship[btn + x + 10] == false && nahoreCislo == -10) {
 								doleCislo = btn + x + 10;
 								boolean full = true;
-								for (int u = doleCislo; u > 0; u -= 10) {
+								for (int u = doleCislo; u >= 0; u -= 10) {
 									if (ship[u] && getContentPane().getComponent(u + 6).isEnabled()) {
 										full = false;
 										break;
@@ -403,20 +403,20 @@ public class Ships extends JFrame {
 										if ((doleCislo + 1) % 10 != 0) {
 											getContentPane().getComponent(doleCislo + 7).setEnabled(false);
 										}
-									} catch (Exception ArrayIndexOutOfBoundsException) {
+									} catch (ArrayIndexOutOfBoundsException eee) {
 
 									}
 									try {
 										if (doleCislo % 10 != 0) {
 											getContentPane().getComponent(doleCislo + 5).setEnabled(false);
 										}
-									} catch (Exception ArrayIndexOutOfBoundsException) {
+									} catch (ArrayIndexOutOfBoundsException eee) {
 
 									}
 
 								}
 							}
-						} catch (Exception ArrayIndexOutOfBoundsException) {
+						} catch (ArrayIndexOutOfBoundsException eee) {
 
 						}
 					}
@@ -433,13 +433,13 @@ public class Ships extends JFrame {
 									if ((nahoreCislo + 1) % 10 != 0) {
 										getContentPane().getComponent(nahoreCislo + 7).setEnabled(false);
 									}
-								} catch (Exception ArrayIndexOutOfBoundsException) {
+								} catch (ArrayIndexOutOfBoundsException eee) {
 								}
 								try {
 									if (nahoreCislo % 10 != 0) {
 										getContentPane().getComponent(nahoreCislo + 5).setEnabled(false);
 									}
-								} catch (Exception ArrayIndexOutOfBoundsException) {
+								} catch (ArrayIndexOutOfBoundsException eee) {
 
 								}
 							}
@@ -447,7 +447,7 @@ public class Ships extends JFrame {
 								&& ship[btn + x + 10] == false) {
 							doleCislo = btn + x + 10;
 							boolean full = true;
-							for (int u = nahoreCislo + 10; u < (doleCislo - 10); u += 10) {
+							for (int u = nahoreCislo + 10; u <= (doleCislo - 10); u += 10) {
 								if (ship[u] && getContentPane().getComponent(u + 6).isEnabled()) {
 									full = false;
 									break;
@@ -463,13 +463,13 @@ public class Ships extends JFrame {
 									if ((nahoreCislo + 1) % 10 != 0) {
 										getContentPane().getComponent(nahoreCislo + 7).setEnabled(false);
 									}
-								} catch (Exception ArrayIndexOutOfBoundsException) {
+								} catch (ArrayIndexOutOfBoundsException eee) {
 								}
 								try {
 									if (nahoreCislo % 10 != 0) {
 										getContentPane().getComponent(nahoreCislo + 5).setEnabled(false);
 									}
-								} catch (Exception ArrayIndexOutOfBoundsException) {
+								} catch (ArrayIndexOutOfBoundsException eee) {
 
 								}
 								try {
@@ -477,14 +477,14 @@ public class Ships extends JFrame {
 									if ((doleCislo + 1) % 10 != 0) {
 										getContentPane().getComponent(doleCislo + 7).setEnabled(false);
 									}
-								} catch (Exception ArrayIndexOutOfBoundsException) {
+								} catch (ArrayIndexOutOfBoundsException eee) {
 
 								}
 								try {
 									if (doleCislo % 10 != 0) {
 										getContentPane().getComponent(doleCislo + 5).setEnabled(false);
 									}
-								} catch (Exception ArrayIndexOutOfBoundsException) {
+								} catch (ArrayIndexOutOfBoundsException eee) {
 
 								}
 							}

@@ -65,7 +65,7 @@ public class Protivnik extends JFrame {
 					}
 					y += 10;
 				}
-			} catch (Exception ArrayIndexOutOfBoundsException) {
+			} catch (ArrayIndexOutOfBoundsException eee) {
 				blocked.setBln(true);
 			}
 			int a = 0;
@@ -91,7 +91,7 @@ public class Protivnik extends JFrame {
 					if ((pozice + 11) % 10 != 0) {
 						border[pozice + 11] = true;
 					}
-				} catch (Exception ArrayIndexOutOfBoundsException) {
+				} catch (ArrayIndexOutOfBoundsException eee) {
 
 				}
 
@@ -103,7 +103,7 @@ public class Protivnik extends JFrame {
 					if ((pozice - a + 1) % 10 != 0) {
 						border[pozice - a + 1] = true;
 					}
-				} catch (Exception ArrayIndexOutOfBoundsException) {
+				} catch (ArrayIndexOutOfBoundsException eee) {
 
 				}
 
@@ -164,7 +164,7 @@ public class Protivnik extends JFrame {
 																getContentPane().getComponent(doleCislo + 1)
 																		.setEnabled(false);
 															}
-														} catch (Exception ArrayIndexOutOfBoundsException) {
+														} catch (ArrayIndexOutOfBoundsException eee) {
 
 														}
 														try {
@@ -172,13 +172,13 @@ public class Protivnik extends JFrame {
 																getContentPane().getComponent(doleCislo - 1)
 																		.setEnabled(false);
 															}
-														} catch (Exception ArrayIndexOutOfBoundsException) {
+														} catch (ArrayIndexOutOfBoundsException eee) {
 
 														}
 
 													}
 												}
-											} catch (Exception ArrayIndexOutOfBoundsException) {
+											} catch (ArrayIndexOutOfBoundsException eee) {
 
 											}
 										}
@@ -197,14 +197,14 @@ public class Protivnik extends JFrame {
 															getContentPane().getComponent(nahoreCislo + 1)
 																	.setEnabled(false);
 														}
-													} catch (Exception ArrayIndexOutOfBoundsException) {
+													} catch (ArrayIndexOutOfBoundsException eee) {
 													}
 													try {
 														if (nahoreCislo % 10 != 0) {
 															getContentPane().getComponent(nahoreCislo - 1)
 																	.setEnabled(false);
 														}
-													} catch (Exception ArrayIndexOutOfBoundsException) {
+													} catch (ArrayIndexOutOfBoundsException eee) {
 
 													}
 												}
@@ -226,14 +226,14 @@ public class Protivnik extends JFrame {
 															getContentPane().getComponent(nahoreCislo + 1)
 																	.setEnabled(false);
 														}
-													} catch (Exception ArrayIndexOutOfBoundsException) {
+													} catch (ArrayIndexOutOfBoundsException eee) {
 													}
 													try {
 														if (nahoreCislo % 10 != 0) {
 															getContentPane().getComponent(nahoreCislo - 1)
 																	.setEnabled(false);
 														}
-													} catch (Exception ArrayIndexOutOfBoundsException) {
+													} catch (ArrayIndexOutOfBoundsException eee) {
 
 													}
 													try {
@@ -242,7 +242,7 @@ public class Protivnik extends JFrame {
 															getContentPane().getComponent(doleCislo + 1)
 																	.setEnabled(false);
 														}
-													} catch (Exception ArrayIndexOutOfBoundsException) {
+													} catch (ArrayIndexOutOfBoundsException eee) {
 
 													}
 													try {
@@ -250,8 +250,7 @@ public class Protivnik extends JFrame {
 															getContentPane().getComponent(doleCislo - 1)
 																	.setEnabled(false);
 														}
-													} catch (Exception ArrayIndexOutOfBoundsException) {
-
+													} catch (ArrayIndexOutOfBoundsException eee) {
 													}
 												}
 
