@@ -324,7 +324,6 @@ public class Ships extends JFrame {
 	public void Attack() throws InterruptedException {
 		Random r = new Random();
 		int btn = 0;
-		System.out.println(hitPosition + (posun * 10) + " dolu");
 		if (hit && down && ((hitPosition + (posun * 10)) < 100)) {
 			btn = hitPosition + (posun * 10);
 			if (!getContentPane().getComponent(btn + 6).isEnabled()) {
@@ -337,7 +336,6 @@ public class Ships extends JFrame {
 			down = false;
 			up = true;
 		}
-		System.out.println(hitPosition - (posun * 10) + " nahoru");
 		if (hit && up && ((hitPosition - (posun * 10))) >= 0) {
 			btn = hitPosition - (posun * 10);
 			if (!getContentPane().getComponent(btn + 6).isEnabled()) {
@@ -363,7 +361,6 @@ public class Ships extends JFrame {
 			} while (!getContentPane().getComponent(btn + 6).isEnabled());
 		}
 		gameInProgress = true;
-		System.out.println(btn);
 		if (ship[btn]) {
 			if (hit == false) {
 				hit = true;
